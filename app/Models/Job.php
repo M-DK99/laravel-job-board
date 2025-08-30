@@ -2,8 +2,8 @@
 
 namespace App\Models;
 class Job 
-{
-    public static function all() {
+{ 
+    public static function all() { 
         return [
             ['title' => 'Job 1', 'salary' => '10000'],
             ['title' => 'Job 2', 'salary' => '20000'],
