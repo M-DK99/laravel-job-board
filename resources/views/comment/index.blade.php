@@ -9,5 +9,5 @@
         <br>
         <br>
         @endforeach
-
-    </x-layout>
+    {{ $comments->links() }}
+</x-layout>

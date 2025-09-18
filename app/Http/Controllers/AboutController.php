@@ -4,11 +4,10 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
-class IndexController extends Controller
+class AboutController extends Controller
 {
-    
     public function __invoke(Request $request)
     {
-        return view('index');
+        return view('about', ["pageTitle" => 'About']);
     }
 }

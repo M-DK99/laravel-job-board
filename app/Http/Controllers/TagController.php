@@ -2,43 +2,67 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Post;
 use App\Models\Tag;
 use Illuminate\Http\Request;
 
 class TagController extends Controller
 {
-    function index(){
+    /**
+     * Display a listing of the resource.
+     */
+    public function index()
+    {
         $data = Tag::all();
         return view('tag.index', ['tags' => $data, "pageTitle" => 'Tags']);
     }
 
-    function create(){
-        Tag::create([
-            'title' => 'CSS',
-        ]);
-        return redirect('/tags');
+    /**
+     * Show the form for creating a new resource.
+     */
+    public function create()
+    {
+        return view('tag.create', ['pageTitle' => 'Create New Tag']);
     }
 
-    function testManyToMany(){
-        // $post2 = Post::find(2);
-        // $post3 = Post::find(3);
+    /**
+     * Store a newly created resource in storage.
+     */
+    public function store(Request $request)
+    {
+        //@ToDo
+    }
 
-        // $post2->tags()->attach([1, 3]);
-        // $post3->tags()->attach([2]);
+    /**
+     * Display the specified resource.
+     */
+    public function show(string $id)
+    {
+        $data = Tag::find($id);
+        return view('tag.show', ['tag' => $data, "pageTitle" => 'View Tag Details']);
+    }
 
-        // return response()->json([
-        //     'post2' => $post2->tags,
-        //     'post3' => $post3->tags
-        // ]);
+    /**
+     * Show the form for editing the specified resource.
+     */
+    public function edit(string $id)
+    {
+        $data = Tag::find($id);
+        return view('tag.edit', ['tag' => $data, "pageTitle" => 'Edit Tag']);
+    }
 
-        $tag = Tag::find(4);
+    /**
+     * Update the specified resource in storage.
+     */
+    public function update(Request $request, string $id)
+    {
+        // @ToDo
+    }
 
-        $tag->posts()->attach([3]);
-
-        return response()->json([
-            'tag' => $tag->title,
-            'posts' => $tag->posts
-        ]);
+    /**
+     * Remove the specified resource from storage.
+     */
+    public function destroy(string $id)
+    {
+        // @ToDo
     }
 }

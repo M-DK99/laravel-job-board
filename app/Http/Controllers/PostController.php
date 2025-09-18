@@ -7,33 +7,62 @@ use Illuminate\Http\Request;
 
 class PostController extends Controller
 {
-    function index(){
-        // $data = Post::all();
+    /**
+     * Display a listing of the resource.
+     */
+    public function index()
+    {
         $data = Post::paginate(4);
-        // $data = Post::simplePaginate(2);
-        // $data = Post::cursorPaginate(5);
         return view('post.index', ['posts' => $data, "pageTitle" => 'Blog']);
     }
 
-    function show ($id){
+    /**
+     * Show the form for creating a new resource.
+     */
+    public function create() 
+    {
+        return view ('post.create', ['pageTitle' => 'Blog - Create New Post']);
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     */
+    public function store(Request $request)
+    {
+        // @ToDo
+    }
+
+    /**
+     * Display the specified resource.
+     */
+    public function show(string $id)
+    {
         $post = Post::findOrFail($id);
         return view('post.show', ['post' => $post, "pageTitle" => $post->title]);
     }
 
-    function create(){
-        // $post = Post::create([
-        //     'title' => 'My third Post',
-        //     'body' => 'This Is My Content 3',
-        //     'author' => 'Ahmed Saltuh',
-        //     'published' => true
-        // ]);
-
-        Post::factory(100)->create();
-        return redirect('/blog');
+    /**
+     * Show the form for editing the specified resource.
+     */
+    public function edit(string $id)
+    {
+        $post = Post::findOrFail($id);
+        return view ('post.edit', ['post' => $post,'pageTitle' => 'Blog Edit Post']);
     }
 
-    function delete () {
-        Post::destroy(1);
-        return redirect('/blog');
+    /**
+     * Update the specified resource in storage.
+     */
+    public function update(Request $request, string $id)
+    {
+        // @ToDo
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     */
+    public function destroy(string $id)
+    {
+        // @ToDo
     }
 }
