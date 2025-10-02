@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\CommentRequest;
 use App\Models\Comment;
+use App\Models\Post;
 use Illuminate\Http\Request;
 
 class CommentController extends Controller
@@ -21,15 +23,27 @@ class CommentController extends Controller
      */
     public function create()
     {
-        return view('comment.create', ['pageTitle' => 'Create New Comment']);
+        return view('comments.create', ['pageTitle' => 'Create New Comment']);
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(CommentRequest $request)
     {
-        // @ToDo
+
+        $post = Post::findOrFail($request->input('post_id'));
+  
+        // $comment = Comment::create($request->all());
+        $comment = new Comment();
+        
+        $comment->author = $request->input('author');
+        $comment->content = $request->input('content');
+        $comment->post_id = $request->input('post_id');
+
+      
+        $comment->save();
+        return redirect("/blog/" . $comment->post_id);
     }
 
     /**
@@ -38,7 +52,7 @@ class CommentController extends Controller
     public function show(string $id)
     {
         $data = Comment::find($id);
-        return view('comment.show', ['comment' => $data, "pageTitle" => 'View Comment Details']);
+        return view('comments.show', ['comment' => $data, "pageTitle" => 'View Comment Details']);
     }
 
     /**
@@ -47,7 +61,7 @@ class CommentController extends Controller
     public function edit(string $id)
     {
         $data = Comment::find($id);
-        return view('comment.edit', ['comment' => $data, "pageTitle" => 'Edit Comment']);
+        return view('comments.edit', ['comment' => $data, "pageTitle" => 'Edit Comment']);
     }
 
     /**

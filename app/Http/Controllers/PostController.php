@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\BlogPostRequest;
 use App\Models\Post;
 use Illuminate\Http\Request;
 
@@ -12,7 +13,7 @@ class PostController extends Controller
      */
     public function index()
     {
-        $data = Post::paginate(4);
+        $data = Post::latest()->paginate(4);
         return view('post.index', ['posts' => $data, "pageTitle" => 'Blog']);
     }
 
@@ -27,14 +28,30 @@ class PostController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(BlogPostRequest $request)
     {
-        // @ToDo
+        // $post = Post::create($request->all());
+
+        // $post = new Post();
+        // $post->title = $request->title;
+        // $post->author = $request->author;   
+        // $post->body = $request->body;
+        // $post->published = $request->has('published');
+        // $post->save();
+
+        $post = new Post();
+        $post->title = $request->input('title');
+        $post->author = $request->input('author');
+        $post->body = $request->input('body');
+        $post->published = $request->has('published');
+        $post->save();
+
+        return redirect('/blog')->with('success', 'Post Created successfully');
     }
 
     /**
-     * Display the specified resource.
-     */
+     * Display the specified resource. 
+     */ 
     public function show(string $id)
     {
         $post = Post::findOrFail($id);
@@ -42,20 +59,26 @@ class PostController extends Controller
     }
 
     /**
-     * Show the form for editing the specified resource.
+     * Show the form for editing the specified resource. introduction
      */
     public function edit(string $id)
     {
         $post = Post::findOrFail($id);
-        return view ('post.edit', ['post' => $post,'pageTitle' => 'Blog Edit Post']);
+        return view ('post.edit', ['post' => $post,'pageTitle' => 'Blog - Edit Post ' . $post->title]);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(BlogPostRequest $request, string $id)
     {
-        // @ToDo
+        $post = Post::findOrFail($id);
+        $post->title = $request->input('title');
+        $post->author = $request->input('author');
+        $post->body = $request->input('body');
+        $post->published = $request->has('published');
+        $post->save();
+        return redirect('/blog')->with('success', 'Post Updated successfully');
     }
 
     /**
@@ -63,6 +86,8 @@ class PostController extends Controller
      */
     public function destroy(string $id)
     {
-        // @ToDo
+        $post = Post::findOrFail($id);
+        $post->delete();
+        return redirect('/blog')->with('success', 'Post Deleted Successfully');
     }
 }
